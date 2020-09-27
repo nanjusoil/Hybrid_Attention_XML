@@ -174,9 +174,11 @@ class Hybrid_XML(BasicModule):
         label_emb=self.label_embedding.expand((attn_key.size(0),self.label_embedding.size(0),self.label_embedding.size(1)))#[batch,L,label_emb]
         label_emb=self.query_layer(label_emb)#[batch,L,label_emb]
         
+        # L代表label的個數
         #attention
         similarity=torch.bmm(label_emb,attn_key)#[batch,L,seq]
         similarity=F.softmax(similarity,dim=2)
+        # 每個label著重不同地方
         
         out1=torch.bmm(similarity,output)#[batch,L,label_emb]
     
